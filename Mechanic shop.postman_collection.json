@@ -1,0 +1,375 @@
+{
+  "info": {
+    "_postman_id": "2321fc9f-24a8-4f8c-ad07-7d70a3910cfb",
+    "name": "Mechanic shop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55556237"
+  },
+  "item": [
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Kris\",\n    \"email\": \"Kris123@mail.com\",\n    \"phone\": \"999999999\" \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Customer by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Customer by ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Alice\",\n    \"email\": \"alice12345@mail.com\",\n    \"phone\": \"123456789\" \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Alice\",\n    \"email\": \"alice12345@mail.com\",\n    \"phone\": \"123456789\" \n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mechanics",
+      "item": [
+        {
+          "name": "Create Mechanic",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John Gray\",\n    \"email\": \"John.gray123@mail.com\",\n    \"phone\": \"777777777\",\n    \"salary\": 63000.00 \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Mechanics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Mechanic by ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"David.smith123@mail.com\",\n    \"id\": 1,\n    \"name\": \"David Smith\",\n    \"phone\": \"666555444\",\n    \"salary\": \"67000.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Mechanic by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"David.smith123@mail.com\",\n    \"id\": 1,\n    \"name\": \"David Smith\",\n    \"phone\": \"666555444\",\n    \"salary\": \"67000.00\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "service_tickets",
+      "item": [
+        {
+          "name": "Create Service Ticket",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"vin\": \"2FMDK3AK7DB123456\",\n    \"service_date\": \"2026-07-08\",\n    \"service_desc\": \"Brake inspection and brake pad replacement\",\n    \"customer_id\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Mechanic",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets/4/assign_mechanic/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets",
+                "4",
+                "assign_mechanic",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Mechanic",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets/4/remove_mechanic/3",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets",
+                "4",
+                "remove_mechanic",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Service Tickets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
