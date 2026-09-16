@@ -18,6 +18,14 @@ service_mechanic = db.Table(
     db.Column("mechanic_id", db.ForeignKey("mechanics.id"), primary_key=True)
 )
 
+#Association Table
+service_ticket_inventory = db.Table(
+    "service_ticket_inventory",
+    Base.metadata,
+    db.Column("service_ticket_id", db.ForeignKey("service_tickets.id"), primary_key=True),
+    db.Column("inventory_id", db.ForeignKey("inventory.id"), primary_key=True)
+)
+
 class Customer(Base):
     __tablename__ = 'customers'
     
@@ -25,6 +33,7 @@ class Customer(Base):
     name: Mapped[str] = mapped_column(db.String(255), nullable=False)
     email: Mapped[str] = mapped_column(db.String(360), nullable=False, unique=True)
     phone: Mapped[str] = mapped_column(db.String(50), nullable=False)
+    password: Mapped[str] = mapped_column(db.String(100), nullable=False)
     #One-to-Many: Customer -> ServiceTicket
     service_tickets: Mapped[List["ServiceTicket"]] = db.relationship(back_populates="customer")
     
@@ -40,6 +49,8 @@ class ServiceTicket(Base):
     customer: Mapped["Customer"] = db.relationship(back_populates="service_tickets")
     #Many-to-Many: ServiceTicket <-> Mechanic
     mechanics: Mapped[List["Mechanic"]] = db.relationship(secondary=service_mechanic, back_populates="service_tickets")
+    #Many-to-Many: ServiceTicket <-> Inventory
+    inventory: Mapped[List["Inventory"]] = db.relationship(secondary=service_ticket_inventory, back_populates="service_tickets")
     
 class Mechanic(Base):
     __tablename__ = 'mechanics'
@@ -52,3 +63,13 @@ class Mechanic(Base):
     
     #Many-to-Many: Mechanic <-> ServiceTicket
     service_tickets: Mapped[List["ServiceTicket"]] = db.relationship(secondary=service_mechanic, back_populates="mechanics")
+    
+class Inventory(Base):
+    __tablename__ = 'inventory'
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    price: Mapped[float] = mapped_column(db.Numeric(10, 2), nullable=False)
+    
+    #Many-to-Many: Inventory <-> ServiceTicket
+    service_tickets: Mapped[List["ServiceTicket"]] = db.relationship(secondary=service_ticket_inventory, back_populates="inventory")

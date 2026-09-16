@@ -1,9 +1,10 @@
-from .schemas import service_ticket_schema, service_tickets_schema
+from .schemas import service_ticket_schema, service_tickets_schema, edit_service_ticket_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
 from sqlalchemy import select
-from application.models import ServiceTicket, db, Mechanic
+from application.models import ServiceTicket, db, Mechanic, Inventory
 from . import service_tickets_bp
+from application.utils.util import token_required
 
 #Create a new service ticket
 @service_tickets_bp.route('/', methods=['POST'])
@@ -65,3 +66,71 @@ def get_tickets():
     tickets = db.session.execute(query).scalars().all()
     
     return service_tickets_schema.jsonify(tickets), 200
+
+#Retrieve the logged-in customer's service tickets
+@service_tickets_bp.route("/my-tickets", methods=["GET"])
+@token_required
+def get_my_tickets(customer_id):
+    query = select(ServiceTicket).where(
+        ServiceTicket.customer_id == int(customer_id)
+    )
+
+    tickets = db.session.execute(query).scalars().all()
+
+    return service_tickets_schema.jsonify(tickets), 200
+
+@service_tickets_bp.route('/<int:ticket_id>/edit', methods=['PUT'])
+def edit_ticket(ticket_id):
+    ticket = db.session.get(ServiceTicket, ticket_id)
+
+    if not ticket:
+        return jsonify({"message": "Invalid service ticket id."}), 404
+
+    try:
+        data = edit_service_ticket_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+
+    for mechanic_id in data["remove_ids"]:
+        mechanic = db.session.get(Mechanic, mechanic_id)
+        if mechanic and mechanic in ticket.mechanics:
+            ticket.mechanics.remove(mechanic)
+
+    for mechanic_id in data["add_ids"]:
+        mechanic = db.session.get(Mechanic, mechanic_id)
+        if mechanic and mechanic not in ticket.mechanics:
+            ticket.mechanics.append(mechanic)
+
+    db.session.commit()
+
+    return jsonify({"message": "Service ticket updated successfully."}), 200
+
+#To add a single part to an existing Service Ticket
+@service_tickets_bp.route("/<int:ticket_id>/add_inventory/<int:inventory_id>", methods=["PUT"])
+def add_inventory(ticket_id, inventory_id):
+
+    ticket = db.session.get(ServiceTicket, ticket_id)
+    inventory = db.session.get(Inventory, inventory_id)
+
+    if not ticket:
+        return jsonify({
+            "message": "Invalid service ticket id."
+        }), 404
+
+    if not inventory:
+        return jsonify({
+            "message": "Invalid inventory id."
+        }), 404
+
+    if inventory in ticket.inventory:
+        return jsonify({
+            "message": "Inventory item is already assigned to this ticket."
+        }), 400
+
+    ticket.inventory.append(inventory)
+
+    db.session.commit()
+
+    return jsonify({
+        "message": f"Inventory item {inventory.name} added to service ticket {ticket.id}!"
+    }), 200

@@ -16,7 +16,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Kris\",\n    \"email\": \"Kris123@mail.com\",\n    \"phone\": \"999999999\" \n}",
+              "raw": "{\n    \"name\": \"Anna Green\",\n    \"email\": \"anna@example.com\",\n    \"phone\": \"555-987-3333\",\n    \"password\": \"password\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -65,10 +65,20 @@
         {
           "name": "Get Customer by ID",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/customers/1",
+              "raw": "http://127.0.0.1:5000/customers/4",
               "protocol": "http",
               "host": [
                 "127",
@@ -79,7 +89,7 @@
               "port": "5000",
               "path": [
                 "customers",
-                "1"
+                "4"
               ]
             }
           },
@@ -143,6 +153,38 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"anna@example.com\",\n    \"password\": \"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/customers/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "customers",
+                "login"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -156,7 +198,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"John Gray\",\n    \"email\": \"John.gray123@mail.com\",\n    \"phone\": \"777777777\",\n    \"salary\": 63000.00 \n}",
+              "raw": "{\n    \"name\": \"Sarah Star\",\n    \"email\": \"sarah@example.com\",\n    \"phone\": \"000-111-2222\",\n    \"salary\": 54000\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -260,6 +302,29 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Popular mechanics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/mechanics/popular",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "mechanics",
+                "popular"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -273,7 +338,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"vin\": \"2FMDK3AK7DB123456\",\n    \"service_date\": \"2026-07-08\",\n    \"service_desc\": \"Brake inspection and brake pad replacement\",\n    \"customer_id\": 3\n}",
+              "raw": "{\n    \"vin\": \"5NPEU46F99H123456\",\n    \"service_date\": \"2026-08-15\",\n    \"service_desc\": \"Air conditioning inspection and refrigerant recharge\",\n    \"customer_id\": 4\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -303,7 +368,7 @@
             "method": "PUT",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/service_tickets/4/assign_mechanic/3",
+              "raw": "http://127.0.0.1:5000/service_tickets/7/assign_mechanic/1",
               "protocol": "http",
               "host": [
                 "127",
@@ -314,9 +379,9 @@
               "port": "5000",
               "path": [
                 "service_tickets",
-                "4",
+                "7",
                 "assign_mechanic",
-                "3"
+                "1"
               ]
             }
           },
@@ -364,6 +429,202 @@
               "port": "5000",
               "path": [
                 "service_tickets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit ticket mechanics",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"add_ids\": [],\n    \"remove_ids\": [1]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets/2/edit",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets",
+                "2",
+                "edit"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Create Inventory",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Car Battery\",\n    \"price\": 149.99\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventory/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventory",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Inventory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventory/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventory",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inventory by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventory/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventory",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Inventory by ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Premium Front Brake Pads\",\n    \"price\": 109.99\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventory/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventory",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Inventory to Service Ticket",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/service_tickets/2/add_inventory/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "service_tickets",
+                "2",
+                "add_inventory",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Inventory by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/inventory/4",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "5000",
+              "path": [
+                "inventory",
+                "4"
               ]
             }
           },
