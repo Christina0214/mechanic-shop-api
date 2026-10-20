@@ -53,7 +53,7 @@ def update_inventory(inventory_id):
         }), 404
 
     try:
-        inventory_data = inventory_schema.load(request.json)
+        inventory_data = inventory_schema.load(request.json, partial=True)
     except ValidationError as e:
         return jsonify(e.messages), 400
 

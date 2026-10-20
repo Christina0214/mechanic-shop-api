@@ -30,7 +30,7 @@ def get_machanics():
     query = select(Mechanic)
     mechanics = db.session.execute(query).scalars().all()
     
-    return mechanics_schema.jsonify(mechanics)
+    return mechanics_schema.jsonify(mechanics), 200
 
 #Update a mechanic by ID
 @mechanics_bp.route('/<int:mechanic_id>', methods=['PUT'])
@@ -41,7 +41,7 @@ def update_mechanic(mechanic_id):
         return jsonify({"error": "Mechanic not found."}), 404
     
     try:
-        mechanic_data = mechanic_schema.load(request.json)
+        mechanic_data = mechanic_schema.load(request.json, partial=True)
     except ValidationError as e:
         return jsonify(e.messages), 400
     
@@ -63,6 +63,7 @@ def delete_mechanic(mechanic_id):
     db.session.commit()
     return jsonify({"message": f'Mechanic id: {mechanic_id}, successfully deleted!'}), 200
 
+#Get popular mechanics
 @mechanics_bp.route('/popular', methods=['GET'])
 def popular_mechanics():
     query = select(Mechanic)
@@ -70,4 +71,4 @@ def popular_mechanics():
     
     mechanics.sort(key=lambda mechanic: len(mechanic.service_tickets), reverse=True)
     
-    return mechanics_schema.jsonify(mechanics)
+    return mechanics_schema.jsonify(mechanics), 200

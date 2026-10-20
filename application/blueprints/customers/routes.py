@@ -31,20 +31,7 @@ def login():
         
         return jsonify(response), 200
     else:
-        return jsonify({'messages': "Invalid email or password"}), 401
-
-#Retrieves all service tickets belonging to the customer who is currently logged in
-@customers_bp.route("/my-tickets", methods=["GET"])
-@token_required
-def get_my_tickets(customer_id):
-
-    query = select(ServiceTicket).where(
-        ServiceTicket.customer_id == customer_id #Makes sure you're only retrieving tickets belonging to the logged-in customer
-    )
-
-    tickets = db.session.execute(query).scalars().all()
-
-    return service_tickets_schema.jsonify(tickets), 200
+        return jsonify({'message': "Invalid email or password!"}), 401
 
 #Create Customer
 @customers_bp.route("/", methods=['POST'])
@@ -103,16 +90,16 @@ def get_customer(customer_id):
 def update_customer(token_customer_id, customer_id):
     customer = db.session.get(Customer, customer_id)
     
+    if not customer:
+        return jsonify({"error": "Customer not found."}), 404
+    
     if int(token_customer_id) != customer_id:
         return jsonify({
             "error": "You are not authorized to update this customer."
         }), 403
     
-    if not customer:
-        return jsonify({"error": "Customer not found."}), 404
-    
     try:
-        customer_data = customer_schema.load(request.json)
+        customer_data = customer_schema.load(request.json, partial=True)
     except ValidationError as e:
         return jsonify(e.messages), 400
     
