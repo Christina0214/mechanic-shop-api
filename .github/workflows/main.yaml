@@ -1,9 +1,10 @@
 name: Flask CI
 
-on: push: branches: [main, master]
+'on': push: branches: - main - master
 
 jobs: build: runs-on: ubuntu-latest
 
+
 steps:
   - name: Checkout code
     uses: actions/checkout@v4
@@ -11,35 +12,14 @@ steps:
   - name: Set up Python
     uses: actions/setup-python@v5
     with:
-      python-version: "3.12"
+      python-version: '3.12'
 
   - name: Create virtual environment
-    run: python -m venv venv
-
-  - name: Install dependencies
     run: |
-      venv/bin/python -m pip install --upgrade pip
-      venv/bin/python -m pip install -r requirements.txt
-
-  - name: Print debugging information
-    run: |
+      set -eux
+      python --version
+      python -m venv venv
       venv/bin/python --version
-      echo "Working Directory: $(pwd)"
-      ls -la
-      venv/bin/python -m pip list
-test: needs: build runs-on: ubuntu-latest
-
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
-
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.12"
-
-  - name: Create virtual environment
-    run: python -m venv venv
 
   - name: Install dependencies
     run: |
