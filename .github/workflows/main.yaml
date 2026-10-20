@@ -21,7 +21,9 @@ jobs:
         run: |
           python --version
           python -m venv venv
-          ./venv/bin/python --version
+          ls -la venv/
+          ls -la venv/bin/
+          venv/bin/python --version
 
       - name: Install dependencies
         run: |
