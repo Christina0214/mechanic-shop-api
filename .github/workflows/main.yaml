@@ -19,8 +19,12 @@ jobs:
 
       - name: Create virtual environment
         run: |
+          set -eux
+          which python
+          python --version
+          python -m venv --help
           python -m venv venv
-          source venv/bin/activate
+          ls -la venv/bin/
 
       - name: Install dependencies
         run: |
