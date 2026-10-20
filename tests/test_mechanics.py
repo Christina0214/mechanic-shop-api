@@ -1,20 +1,36 @@
-from app import create_app
+from application import create_app
 from application.models import db, Mechanic
 import unittest
 
 class TestMechanic(unittest.TestCase):
     def setUp(self):
         self.app = create_app("TestingConfig")
-        self.mechanic = Mechanic(name='test_mechanic', email='test@email.com', phone='1234567890', salary=65000.0)
-        with self.app.app_context():
-            db.drop_all()
-            db.create_all()
-            db.session.add(self.mechanic)
-            db.session.commit()
-            
-            self.mechanic_id = self.mechanic.id
-            
+        
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        
+        # Initialize the testing database
+        db.drop_all()
+        db.create_all()
+        
+        # Create a mechanic for the tests
+        self.mechanic = Mechanic(
+            name='test_mechanic',
+            email='test@email.com',
+            phone='1234567890',
+            salary=65000.0
+        )
+        
+        db.session.add(self.mechanic)
+        db.session.commit()
+    
+        self.mechanic_id = self.mechanic.id
         self.client = self.app.test_client()
+    
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
         
     def test_create_mechanic(self):
         mechanic_payload = {

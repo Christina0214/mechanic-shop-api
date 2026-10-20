@@ -1,4 +1,4 @@
-from app import create_app
+from application import create_app
 from application.models import db, Customer
 from application.utils.util import encode_token
 import unittest
@@ -6,17 +6,33 @@ import unittest
 class TestCustomer(unittest.TestCase):
     def setUp(self):
         self.app = create_app("TestingConfig")
-        self.customer = Customer(name='test_user', email='test@email.com', phone='test_phone', password='test')
-        with self.app.app_context():
-            db.drop_all()
-            db.create_all()
-            db.session.add(self.customer)
-            db.session.commit()
-            
-            customer_id = self.customer.id
-            
-        self.token = encode_token(customer_id)
+        
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        
+        # Initialize the testing database
+        db.drop_all()
+        db.create_all()
+        # Create a test customer
+        self.customer = Customer(
+            name='test_user',
+            email='test@email.com',
+            phone='test_phone',
+            password='test'
+        )
+       
+        db.session.add(self.customer)
+        db.session.commit()
+
+        self.customer_id = self.customer.id
+        self.token = encode_token(self.customer_id)
+
         self.client = self.app.test_client()
+        
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
         
     def test_create_customer(self):
         customer_payload = {
@@ -68,7 +84,7 @@ class TestCustomer(unittest.TestCase):
         self.assertEqual(response.json[0]['name'], 'test_user')
         
     def test_get_customer_by_id(self):
-        response = self.client.get(f'/customers/{self.customer.id}')
+        response = self.client.get(f'/customers/{self.customer_id}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json['name'], 'test_user')
         
@@ -83,7 +99,7 @@ class TestCustomer(unittest.TestCase):
             "name": "John"
         }
         
-        headers = {'Authorization': "Bearer " + self.test_login_customer()}
+        headers = {'Authorization': f'Bearer {self.token}'}
         
         response = self.client.put(f'/customers/{self.customer.id}', json=update_payload, headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -94,16 +110,14 @@ class TestCustomer(unittest.TestCase):
             "name": "John"
         }
 
-        headers = {
-            'Authorization': "Bearer " + self.test_login_customer()
-        }
+        headers = {'Authorization': f'Bearer {self.token}'}
 
         response = self.client.put('/customers/9999', json=update_payload, headers=headers)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json['error'], 'Customer not found.')
         
     def test_delete_customer(self):
-        headers = {'Authorization': "Bearer " + self.test_login_customer()}
+        headers = {'Authorization': f'Bearer {self.token}'}
         
         response = self.client.delete(f'/customers/{self.customer.id}', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -122,7 +136,7 @@ class TestCustomer(unittest.TestCase):
             other_customer_id = other_customer.id
 
         # Log in as the original test customer
-        headers = {'Authorization': "Bearer " + self.test_login_customer()}
+        headers = {'Authorization': f'Bearer {self.token}'}
 
         # Try to delete the other customer's account
         response = self.client.delete(f'/customers/{other_customer_id}', headers=headers)

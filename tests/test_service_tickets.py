@@ -1,5 +1,5 @@
-from app import create_app
-from application.models import db, ServiceTicket, Mechanic, Inventory
+from application import create_app
+from application.models import db, ServiceTicket, Mechanic, Inventory, Customer
 from application.utils.util import encode_token
 from datetime import date
 import unittest
@@ -7,24 +7,49 @@ import unittest
 class TestServiceTicket(unittest.TestCase):
     def setUp(self):
         self.app = create_app("TestingConfig")
-        self.service_ticket = ServiceTicket(vin='test_vin', service_date=date(2026, 10, 15), service_desc='test_desc', customer_id=1)
-        with self.app.app_context():
-            db.drop_all()
-            db.create_all()
-            db.session.add(self.service_ticket)
-            db.session.commit()
+        
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        
+        # Create the testing database tables first
+        db.drop_all()
+        db.create_all()
+        # Create a customer before creating the service ticket
+        self.customer = Customer(
+            name="test_customer",
+            email="customer@test.com",
+            phone="1234567890",
+            password="test"
+        )
+
+        db.session.add(self.customer)
+        db.session.commit()
+        # Create the service ticket using the real customer ID
+        self.service_ticket = ServiceTicket(
+            vin='test_vin',
+            service_date=date(2026, 10, 15),
+            service_desc='test_desc',
+            customer_id=self.customer.id
+        )
+        
+        
+        db.session.add(self.service_ticket)
+        db.session.commit()
             
-            service_ticket_id = self.service_ticket.id
-            
-        self.token = encode_token(service_ticket_id)
+        self.token = encode_token(self.customer.id)
         self.client = self.app.test_client()
+        
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
         
     def test_create_service_ticket(self):
         service_ticket_payload = {
             "vin": "1HGCM82633A123456",
             "service_date": "2026-10-15",
            	"service_desc": "Oil change and brake inspection",
-            "customer_id": "1"
+            "customer_id": self.customer.id
         }
 
         response = self.client.post('/service_tickets/', json=service_ticket_payload)

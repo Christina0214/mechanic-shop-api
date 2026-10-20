@@ -1,20 +1,30 @@
-from app import create_app
+from application import create_app
 from application.models import db, Inventory
 import unittest
 
 class TestInventory(unittest.TestCase):
     def setUp(self):
         self.app = create_app("TestingConfig")
-        self.inventory = Inventory(name='test_inventory', price=99.99)
-        with self.app.app_context():
-            db.drop_all()
-            db.create_all()
-            db.session.add(self.inventory)
-            db.session.commit()
-            
-            self.inventory_id = self.inventory.id
-            
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+
+        db.create_all()
+        
+        self.inventory = Inventory(
+            name='test_inventory',
+            price=99.99
+        )
+        
+        db.session.add(self.inventory)
+        db.session.commit()
+        
+        self.inventory_id = self.inventory.id
         self.client = self.app.test_client()
+        
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
         
     def test_create_inventory(self):
         inventory_payload = {

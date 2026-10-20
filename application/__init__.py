@@ -14,7 +14,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config={
-        'app_name': "Your API's Name"
+        'app_name': "Mechanic Shop API"
     }
 )
 
