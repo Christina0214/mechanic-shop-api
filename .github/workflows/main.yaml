@@ -52,7 +52,7 @@ jobs:
 
       - name: Create virtual environment
         run: |
-          python -m venv venv
+          python -m venv "$RUNNER_TEMP/venv"
           source "$RUNNER_TEMP/venv/bin/activate"
 
       - name: Install dependencies
