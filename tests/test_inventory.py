@@ -8,6 +8,7 @@ class TestInventory(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
+        db.drop_all()
         db.create_all()
         
         self.inventory = Inventory(

@@ -1,6 +1,10 @@
 ## Mechanic Shop API
 
-- A Flask REST API for managing a mechanic shop. This application allows users to manage customers, mechanics, and service tickets. Users can create service tickets for customers and assign mechanics to service tickets through a many-to-many relationship.
+- The Mechanic Shop API is a Flask-based REST API for managing a mechanic shop's customers, mechanics, service tickets, and inventory. It uses SQLAlchemy for database management and token-based authentication for protected customer operations.
+
+- The project includes Swagger API documentation and automated unit tests using Python's built-in unittest framework.
+
+
 
 ## Technologies Used
 - Python
@@ -13,56 +17,43 @@
 - Python-JOSE
 - SQLite
 - Postman
+- Flask-Swagger / Flask-Swagger-UI
+- Python unittest
+- JWT or the token implementation used by the application
 
 ## Features
 
-### Customers
-- Create a customer
-- Retrieve all customers
-- Retrieve a customer by ID
-- Update a customer
-- Delete a customer
-- Customer login
-- JWT authentication
-- Retrieve service tickets belonging to the logged-in customer
-- Pagination for customer results
+- Customers: Create accounts, log in, retrieve customer information, update accounts, and delete accounts.
+- Mechanics: Create, retrieve, update, and delete mechanics, and view popular mechanics.
+- Service Tickets: Create and retrieve service tickets, view a customer's tickets, assign or remove mechanics, edit mechanic assignments, and add inventory items.
+- Inventory: Create, retrieve, update, and delete inventory items.
+- Authentication: Generate and use authentication tokens for protected endpoints.
+- Documentation: Document API endpoints, request payloads, and responses using Swagger.
+- Testing: Test successful requests, validation errors, missing records, and authorization behavior.
 
-### Mechanics
-- Create a mechanic
-- Retrieve all mechanics
-- Retrieve a mechanic by ID
-- Update a mechanic
-- Delete a mechanic
-- Retrieve mechanics ranked by the number of service tickets they have worked on
+## API Documentation
+The API is documented using Swagger 2.0.
 
-### Service Tickets
-- Create a service ticket
-- Retrieve all service tickets
-- Assign a mechanic to a service ticket
-- Remove a mechanic from a service ticket
-- Add and remove multiple mechanics from a ticket
-- Add inventory parts to a service ticket
-- Retrieve service tickets belonging to the logged-in customer
+The Swagger specification is stored in swagger.yaml. It documents endpoint paths, HTTP methods, tags, summaries, request payloads, response schemas, and authentication requirements.
 
-### Inventory
-- Create an inventory item
-- Retrieve all inventory items
-- Retrieve an inventory item by ID
-- Update an inventory item
-- Delete an inventory item
-- Associate inventory parts with service tickets
+If Swagger UI is configured in the Flask application, open the configured Swagger UI URL in your browser. For example, the application may expose a documentation page at:
 
-## Testing
+http://127.0.0.1:5000/api/docs
 
-- API endpoints were tested using Postman. A Postman collection is included with the project containing requests for all CRUD operations and service ticket mechanic assignments.
+The exact URL depends on the Flask Swagger UI configuration.
 
-### Authentication & Security
+If the documentation page does not load, verify that Swagger UI is registered with the application and that its specification URL points to the correct YAML file.
 
-JWT authentication is used for protected customer routes.
+## Authentication
+For protected endpoints, first log in using the customer login endpoint. Copy the returned token and use it in the Authorization header:
 
-When a customer logs in successfully, the API generates a token containing the customer's ID.
+Authorization: Bearer YOUR_TOKEN
+In Swagger UI, use the authorization control if it is configured for the bearerAuth security definition.
 
-Protected requests use:
+## Running the Tests
+Run the full test suite from the project root:
 
-```text
-Authorization: Bearer <token>
+python -m unittest discover tests
+
+The test suite should cover all API routes, including successful requests and negative scenarios such as missing required fields, invalid credentials, nonexistent records, and unauthorized access.
+

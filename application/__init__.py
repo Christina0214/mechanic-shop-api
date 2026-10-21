@@ -18,10 +18,10 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     }
 )
 
-def create_app(congfig_name):
+def create_app(config_name):
     app = Flask(__name__)
     # Load app configuration
-    app.config.from_object(f'config.{congfig_name}')
+    app.config.from_object(f'config.{config_name}')
     
     #initialize extensions
     ma.init_app(app)
@@ -34,6 +34,6 @@ def create_app(congfig_name):
     app.register_blueprint(mechanics_bp, url_prefix='/mechanics')
     app.register_blueprint(service_tickets_bp, url_prefix='/service_tickets')
     app.register_blueprint(inventory_bp, url_prefix='/inventory')
-    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL) #Registering our swagger blueprint
+    app.register_blueprint(swaggerui_blueprint) #Registering our swagger blueprint
     
     return app

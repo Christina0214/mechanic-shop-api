@@ -291,7 +291,7 @@ paths:
             items:
               $ref: "#/definitions/MechanicResponse"
 
-  /service-tickets/:
+  /service_tickets/:
     post:
       tags:
         - Service Tickets
@@ -325,7 +325,7 @@ paths:
           schema:
               $ref: "#/definitions/AllServiceTickets"
 
-  /service-tickets/my-tickets:
+  /service_tickets/my-tickets:
     get:
       tags:
         - Service Tickets
@@ -346,7 +346,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /service-tickets/{ticket_id}/assign_mechanic/{mechanic_id}:
+  /service_tickets/{ticket_id}/assign_mechanic/{mechanic_id}:
     put:
       tags:
         - Service Tickets
@@ -380,7 +380,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 
-  /service-tickets/{ticket_id}/remove_mechanic/{mechanic_id}:
+  /service_tickets/{ticket_id}/remove_mechanic/{mechanic_id}:
     put:
       tags:
         - Service Tickets
@@ -408,7 +408,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /service-tickets/{ticket_id}/edit:
+  /service_tickets/{ticket_id}/edit:
     put:
       tags:
         - Service Tickets
@@ -441,7 +441,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /service-tickets/{ticket_id}/add_inventory/{inventory_id}:
+  /service_tickets/{ticket_id}/add_inventory/{inventory_id}:
     put:
       tags:
         - Service Tickets
