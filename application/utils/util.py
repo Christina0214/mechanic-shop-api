@@ -3,8 +3,9 @@ from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
 from flask import request, jsonify
 from functools import wraps
+import os
 
-SECRET_KEY = "a super secret, secret key"
+SECRET_KEY = os.environ.get('SECRET_KEY') or "super secret secrets"
 
 def encode_token(customer_id): #using unique pieces of info to make our tokens user specific
     payload = {
