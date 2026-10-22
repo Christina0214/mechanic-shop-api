@@ -1,5 +1,6 @@
 from flask import Flask
 from .extensions import ma, limiter, cache
+from . import models
 from .models import db
 from .blueprints.customers import customers_bp
 from .blueprints.mechanics import mechanics_bp
